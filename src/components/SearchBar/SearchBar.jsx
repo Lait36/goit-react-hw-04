@@ -5,10 +5,10 @@ export default function SearchBar({ onSubmit }) {
   return (
     <div className={css.container}>
       <Formik
-        initialValues={{ input: ""}}
+        initialValues={{ topic: "" }}
         onSubmit={(values, actions) => {
           onSubmit(values.topic);
-          actions.resetForm()
+          actions.resetForm();
         }}
       >
         <Form className={css.form}>
@@ -17,7 +17,6 @@ export default function SearchBar({ onSubmit }) {
             type="text"
             placeholder="Search images and photos"
             name="topic"
-            value={values.topic}
           />
           <ErrorMessage
             name="topic"
