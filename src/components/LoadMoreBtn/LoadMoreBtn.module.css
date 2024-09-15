@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  justify-content: center; /* Центрує по горизонталі */
+  /* position: fixed; */
+  bottom: 20px; /* Відступ від нижнього краю */
+  left: 0;
+  right: 0;
+  margin-bottom: 15px;
+  z-index: 1000; /* Для того, щоб кнопка була поверх іншого контенту */
+}
+
+.btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  display: flex;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}

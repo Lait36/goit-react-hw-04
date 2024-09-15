@@ -1,34 +1,73 @@
 import { useEffect, useState } from "react";
-
 import SearchBar from "../SearchBar/SearchBar";
 import ImageGallery from "../ImageGallery/ImageGallery";
+import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
+import { fetchArticles } from "../../articles-api";
+import Loader from "../Loader/Loader";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import ImageModal from "../ImageModal/ImageModal";
 
 export default function App() {
   const [images, setImages] = useState([]);
-  const [page, setPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [topic, setTopic] = useState("");
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Стан для модального вікна
+  const [selectedImage, setSelectedImage] = useState(null); // Стан для вибраного зображення
 
   const handleSearch = (newTopic) => {
     setImages([]);
-    setPage(1);
+    setCurrentPage(1);
     setTopic(newTopic);
+    setError(false);
   };
   const handleLoadMore = () => {
-    setPage(page + 1);
+    setCurrentPage(currentPage + 1);
+  };
+
+  const openModal = (image) => {
+    setSelectedImage(image);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedImage(null);
+    setIsModalOpen(false);
   };
 
   useEffect(() => {
     if (topic === "") {
       return;
     }
-    async function getImages() {}
+    async function getImages() {
+      try {
+        setLoading(true);
+        const data = await fetchArticles(topic, currentPage);
+        setImages((prevArticles) => {
+          return [...prevArticles, ...data];
+        });
+      } catch {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
     getImages();
-  }, []);
+  }, [currentPage, topic]);
 
   return (
     <>
       <SearchBar onSubmit={handleSearch} />
-      {images.length > 0 && <ImageGallery items={images} />}
+      {images.length > 0 && <ImageGallery items={images} onImageClick={openModal} />}
+      {images.length > 0 && <LoadMoreBtn loadMore={handleLoadMore} />}
+      {error && <ErrorMessage />}
+      {loading && <Loader />}
+      <ImageModal 
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        image={selectedImage}
+      />
     </>
   );
 }
