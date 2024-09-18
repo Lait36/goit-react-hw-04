@@ -8,13 +8,20 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import ImageModal from "../ImageModal/ImageModal";
 
 export default function App() {
+  // const [images, setImages] = useState([]);
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [topic, setTopic] = useState("");
+  // const [error, setError] = useState(false);
+  // const [loading, setLoading] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false); // Стан для модального вікна
+  // const [selectedImage, setSelectedImage] = useState(null); // Стан для вибраного зображення
   const [images, setImages] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const [topic, setTopic] = useState("");
-  const [error, setError] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false); // Стан для модального вікна
-  const [selectedImage, setSelectedImage] = useState(null); // Стан для вибраного зображення
+  const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const handleSearch = (newTopic) => {
     setImages([]);
@@ -32,8 +39,8 @@ export default function App() {
   };
 
   const closeModal = () => {
-    setSelectedImage(null);
     setIsModalOpen(false);
+    setSelectedImage(null);
   };
 
   useEffect(() => {
@@ -65,7 +72,7 @@ export default function App() {
       {loading && <Loader />}
       <ImageModal 
         isOpen={isModalOpen}
-        onRequestClose={closeModal}
+        onClose={closeModal}
         image={selectedImage}
       />
     </>

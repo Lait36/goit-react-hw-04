@@ -1,24 +1,30 @@
-// import React from 'react';
-import Modal from 'react-modal';
+import Modal from "react-modal";
+import css from "./ImageModal.module.css";
 
-export default function ImageModal({ isOpen, onRequestClose, image })  {
-    return (
-      <Modal
-        isOpen={isOpen}
-        onRequestClose={onRequestClose}
-        contentLabel="Image Modal"
-        className="modal"
-        overlayClassName="overlay"
-      >
-        <div className="modal-content">
-          <button onClick={onRequestClose} className="close-btn">X</button>
-          {image && (
-            <div>
-              <img src={image.url} alt={image.alt_description} className="modal-image" />
-              <p>{image.description || "No description available"}</p>
-            </div>
-          )}
+Modal.setAppElement("#root");
+
+export default function ImageModal({ isOpen, onClose, image }) {
+  return (
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={onClose}
+      className={css.modal}
+      overlayClassName={css.overlay}
+    >
+      <div>
+        <img
+          src={image?.urls.full}
+          alt={image?.alt_description}
+          className={css.img}
+        />
+        <div className={css.textContainer}>
+          <p className={css.author}>Author: {image?.user.name}</p>
+          <p className={css.likes}>Likes: {image?.likes}</p>
         </div>
-      </Modal>
-    );
-  }
+        <button onClick={onClose} className={css.btn}>
+          Close
+        </button>
+      </div>
+    </Modal>
+  );
+}
